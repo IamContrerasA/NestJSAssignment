@@ -1,5 +1,6 @@
-import { IsString } from 'class-validator';
+import { IsString, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserRole } from '../enum/user-enum';
 export class CreateUserDto {
   @ApiProperty({ description: 'The email of a user.' })
   @IsString()
@@ -9,7 +10,7 @@ export class CreateUserDto {
   @IsString()
   readonly password: string;
 
-  @ApiProperty({ description: 'The role of a user.' })
-  @IsString()
-  readonly role: string;
+  @ApiProperty({ enum: ['Manager', 'Client'] })
+  @IsEnum(UserRole)
+  readonly role: UserRole;
 }

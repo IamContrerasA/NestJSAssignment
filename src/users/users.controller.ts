@@ -19,7 +19,6 @@ export class UsersController {
 
   @Get()
   findAll() {
-    //const { limit, offset } = paginationQuery;
     return this.usersService.findAll();
   }
 
