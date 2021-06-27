@@ -1,14 +1,18 @@
-import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsPositive } from 'class-validator';
 
 export class PaginationQueryDto {
-  @Type(() => Number)
   @IsOptional()
   @IsPositive()
-  limit: number;
+  limit?: number;
 
-  @Type(() => Number)
   @IsOptional()
   @IsPositive()
-  offset: number;
+  offset?: number;
+
+  @ApiProperty({
+    description: 'If you set a category, dont set a limit or offset',
+  })
+  @IsOptional()
+  category?: string;
 }

@@ -10,6 +10,11 @@ export class CreateProductDto {
   @IsString()
   readonly details: string;
 
+  @ApiProperty({ description: 'The category of a product.' })
+  @IsString()
+  @IsOptional()
+  readonly category: string = 'other';
+
   @ApiProperty({ description: 'The number of likes of a product' })
   @IsNumber()
   @IsOptional()

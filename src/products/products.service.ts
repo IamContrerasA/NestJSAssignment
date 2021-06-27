@@ -14,12 +14,18 @@ export class ProductsService {
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
-    const { limit, offset } = paginationQuery;
-    if (!limit && !offset) return this.productRepository.find();
-    return this.productRepository.find({
-      skip: offset,
-      take: limit,
-    });
+    const { limit, offset, category } = paginationQuery;
+    const filters: any = {
+      skip: limit ? limit : 0,
+      take: offset ? offset : 0,
+    };
+    if (category) {
+      filters.category = category;
+      delete filters.skip;
+      delete filters.take;
+    }
+    console.log(filters);
+    return this.productRepository.find(filters);
   }
 
   async findOne(id: string) {
