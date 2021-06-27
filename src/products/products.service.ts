@@ -58,4 +58,17 @@ export class ProductsService {
     const product = await this.findOne(id);
     return this.productRepository.remove(product);
   }
+
+  async isEnabled(id: string) {
+    const product = await this.productRepository.preload({
+      id: +id,
+    });
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return this.productRepository.save({
+      ...product,
+      isEnabled: !product.isEnabled,
+    });
+  }
 }

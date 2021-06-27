@@ -44,4 +44,9 @@ export class ProductsController {
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
+
+  @Post(':id/enabled')
+  isEnabled(@Param('id') id: string) {
+    return this.productsService.isEnabled(id);
+  }
 }
