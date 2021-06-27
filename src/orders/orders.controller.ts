@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 
@@ -15,6 +15,16 @@ export class OrdersController {
   @Get('/show-order')
   showOrder() {
     return this.ordersService.showOrder();
+  }
+
+  @Get('/show-orders')
+  showOrders() {
+    return this.ordersService.showOrders();
+  }
+
+  @Post('/buy-order')
+  buyOrder() {
+    return this.ordersService.buyOrder();
   }
 
   @Get('/show-order/:id')

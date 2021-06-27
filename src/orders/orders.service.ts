@@ -48,6 +48,44 @@ export class OrdersService {
     return currentOrder;
   }
 
+  async showOrders() {
+    const fakeUser = {
+      id: 3,
+      email: 'email@email.com',
+      password: 'password',
+      role: 'role',
+    };
+
+    const allClientOrders = await this.orderRepository.find({
+      relations: ['user', 'products'],
+      where: { user: fakeUser },
+    });
+
+    return allClientOrders;
+  }
+
+  async buyOrder() {
+    const fakeUser = {
+      id: 3,
+      email: 'email@email.com',
+      password: 'password',
+      role: 'role',
+    };
+
+    const currentOrder = await this.orderRepository.findOne(
+      {
+        user: fakeUser,
+        approved: false,
+      },
+      { relations: ['user', 'products'] },
+    );
+
+    if (!currentOrder)
+      throw new NotFoundException(`Add a product in car first`);
+
+    return this.orderRepository.save({ ...currentOrder, approved: true });
+  }
+
   async showClientOrder(id: string) {
     const user = await this.userRepository.findOne(id);
     if (!user) {
