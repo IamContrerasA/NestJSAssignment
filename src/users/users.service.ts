@@ -26,11 +26,13 @@ export class UsersService {
   }
 
   async findOneWithEmail(email: string) {
-    const user = await this.userRepository.findOne(email);
+    const user = await this.userRepository.findOne({ email: email });
+
     if (!user) {
       throw new NotFoundException(`User #${email} not found`);
     }
-    return user;
+
+    return { ...user };
   }
 
   async create(createUserDto: CreateUserDto) {
