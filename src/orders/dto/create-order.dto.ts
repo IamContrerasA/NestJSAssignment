@@ -12,6 +12,6 @@ export class CreateOrderDto {
   @IsOptional()
   readonly approved: boolean = false;
 
-  @ApiProperty({ example: [] })
+  @ApiProperty({ description: 'The producst of a order' })
   readonly products: Product[];
 }

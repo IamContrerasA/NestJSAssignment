@@ -1,6 +1,13 @@
 import { Product } from 'src/products/entities/product.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity() // sql table === 'order'
 export class Order {
@@ -13,6 +20,9 @@ export class Order {
   @ManyToOne(() => User, (user) => user.orders)
   user: User;
 
-  @ManyToOne(() => Product, (product) => product.orders)
+  @JoinTable()
+  @ManyToMany(() => Product, (product) => product.orders, {
+    cascade: true,
+  })
   products: Product[];
 }

@@ -103,9 +103,16 @@ export class ProductsService {
       throw new NotFoundException(`Product #${id} not found`);
     }
 
+    const fakeUser = {
+      id: 3,
+      email: 'email@email.com',
+      password: 'password',
+      role: 'role',
+    };
     return this.orderRepository.save({
       approved: false,
-      productsId: 1,
+      products: [product],
+      user: fakeUser,
     });
   }
   async liked(id: string) {

@@ -1,5 +1,5 @@
 import { Order } from 'src/orders/entities/order.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity() // sql table === 'user'
 export class User {
@@ -15,6 +15,6 @@ export class User {
   @Column()
   role: string;
 
-  @OneToOne(() => Order, (order) => order.user)
-  orders: Order;
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }
