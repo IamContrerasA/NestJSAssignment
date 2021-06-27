@@ -1,11 +1,5 @@
 import { Order } from 'src/orders/entities/order.entity';
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity() // sql table === 'product'
 export class Product {

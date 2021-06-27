@@ -82,7 +82,6 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException(`Product #${id} not found`);
     }
-    console.log(addImage);
     return this.productRepository.save({
       ...product,
       image: addImage.image,
@@ -109,11 +108,24 @@ export class ProductsService {
       password: 'password',
       role: 'role',
     };
-    return this.orderRepository.save({
-      approved: false,
-      products: [product],
-      user: fakeUser,
-    });
+
+    const currentOrder = await this.orderRepository.findOne(
+      {
+        user: fakeUser,
+        approved: false,
+      },
+      { relations: ['user', 'products'] },
+    );
+    if (!currentOrder) {
+      return this.orderRepository.save({
+        approved: false,
+        products: [{ ...product, quantity: 1 }],
+        user: fakeUser,
+      });
+    }
+
+    currentOrder.products.push(product);
+    return this.orderRepository.save(currentOrder);
   }
   async liked(id: string) {
     const product = await this.productRepository.preload({
