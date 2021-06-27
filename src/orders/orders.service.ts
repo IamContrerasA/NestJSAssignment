@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Order } from './entities/order.entity';
 
@@ -8,6 +9,8 @@ export class OrdersService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   findAll() {
@@ -43,5 +46,21 @@ export class OrdersService {
     );
 
     return currentOrder;
+  }
+
+  async showClientOrder(id: string) {
+    const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`User #${id} not found`);
+    }
+
+    const userOrders = await this.orderRepository.find({
+      relations: ['user', 'products'],
+      where: {
+        user,
+      },
+    });
+
+    return userOrders;
   }
 }

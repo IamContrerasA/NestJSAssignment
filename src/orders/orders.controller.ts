@@ -17,6 +17,11 @@ export class OrdersController {
     return this.ordersService.showOrder();
   }
 
+  @Get('/show-order/:id')
+  showClientOrder(@Param('id') id: string) {
+    return this.ordersService.showClientOrder(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(id);

@@ -27,7 +27,6 @@ export class ProductsService {
       delete filters.skip;
       delete filters.take;
     }
-    console.log(filters);
     return this.productRepository.find(filters);
   }
 
