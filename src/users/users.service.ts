@@ -37,7 +37,7 @@ export class UsersService {
       throw new NotFoundException(`User #${email} not found`);
     }
 
-    return { ...user };
+    return this.userRepository.save({ ...user, logged: true });
   }
 
   async create(createUserDto: CreateUserDto) {

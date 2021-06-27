@@ -13,7 +13,8 @@ export class OrdersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  findAll() {
+  findAll(user: User) {
+    console.log(user);
     return this.orderRepository.find({
       relations: ['user', 'products'],
     });

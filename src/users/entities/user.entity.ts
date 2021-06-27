@@ -15,6 +15,9 @@ export class User {
   @Column()
   role: string;
 
+  @Column()
+  logged: boolean;
+
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 }
