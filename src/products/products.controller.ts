@@ -49,4 +49,9 @@ export class ProductsController {
   isEnabled(@Param('id') id: string) {
     return this.productsService.isEnabled(id);
   }
+
+  @Patch(':id/add-image')
+  addImage(@Param('id') id: string, @Body() addImage: UpdateProductDto) {
+    return this.productsService.addImage(id, addImage);
+  }
 }

@@ -71,4 +71,18 @@ export class ProductsService {
       isEnabled: !product.isEnabled,
     });
   }
+
+  async addImage(id: string, addImage: UpdateProductDto) {
+    const product = await this.productRepository.preload({
+      id: +id,
+    });
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    console.log(addImage);
+    return this.productRepository.save({
+      ...product,
+      image: addImage.image,
+    });
+  }
 }
