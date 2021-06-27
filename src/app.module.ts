@@ -7,12 +7,14 @@ import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { User } from './users/entities/user.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     UsersModule,
     ProductsModule,
     OrdersModule,
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
