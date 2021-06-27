@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Repository } from 'typeorm';
+import { Order } from 'src/orders/entities/order.entity';
+import { Connection, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -11,6 +12,8 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -93,7 +96,17 @@ export class ProductsService {
     return { details: product.details };
   }
   async addCar(id: string) {
-    return { message: 'carrito' };
+    const product = await this.productRepository.preload({
+      id: +id,
+    });
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+
+    return this.orderRepository.save({
+      approved: false,
+      productsId: 1,
+    });
   }
   async liked(id: string) {
     const product = await this.productRepository.preload({
