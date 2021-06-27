@@ -19,11 +19,32 @@ export class OrdersService {
   }
 
   async findOne(id: string) {
-    const order = await this.orderRepository.findOne(id);
+    const order = await this.orderRepository.findOne(id, {
+      relations: ['user', 'products'],
+    });
     if (!order) {
       throw new NotFoundException(`Order #${id} not found`);
     }
     return order;
+  }
+
+  async showOrder() {
+    const fakeUser = {
+      id: 3,
+      email: 'email@email.com',
+      password: 'password',
+      role: 'role',
+    };
+
+    const currentOrder = await this.orderRepository.findOne(
+      {
+        user: fakeUser,
+        approved: false,
+      },
+      { relations: ['user', 'products'] },
+    );
+
+    return currentOrder;
   }
 
   async create(createOrderDto: CreateOrderDto) {
