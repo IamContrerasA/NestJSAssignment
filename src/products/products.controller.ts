@@ -54,4 +54,19 @@ export class ProductsController {
   addImage(@Param('id') id: string, @Body() addImage: UpdateProductDto) {
     return this.productsService.addImage(id, addImage);
   }
+
+  @Get(':id/details')
+  details(@Param('id') id: string) {
+    return this.productsService.details(id);
+  }
+
+  @Post(':id/add-car')
+  addCar(@Param('id') id: string) {
+    return this.productsService.addCar(id);
+  }
+
+  @Post(':id/liked')
+  liked(@Param('id') id: string) {
+    return this.productsService.liked(id);
+  }
 }

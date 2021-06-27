@@ -85,4 +85,26 @@ export class ProductsService {
       image: addImage.image,
     });
   }
+  async details(id: string) {
+    const product = await this.productRepository.findOne(id);
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return { details: product.details };
+  }
+  async addCar(id: string) {
+    return { message: 'carrito' };
+  }
+  async liked(id: string) {
+    const product = await this.productRepository.preload({
+      id: +id,
+    });
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return this.productRepository.save({
+      ...product,
+      likes: product.likes + 1,
+    });
+  }
 }
