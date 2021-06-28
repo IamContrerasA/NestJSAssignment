@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-
+import { User } from 'src/users/entities/user.entity';
+import { UserRole } from 'src/users/enum/user-enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -31,5 +32,17 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async protectedRoutes(bearerUser: User) {
+    const user = await this.usersService.findOne(`${bearerUser.id}`);
+
+    if (!user.logged)
+      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+    if (user.role === UserRole.CLIENT)
+      throw new HttpException(
+        `You don't have permission, you are client`,
+        HttpStatus.FORBIDDEN,
+      );
   }
 }

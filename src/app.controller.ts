@@ -54,15 +54,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
-    const user = await this.userRepository.findOne(req.user.id);
-
-    if (!user.logged)
-      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
-    if (user.role === UserRole.CLIENT)
-      throw new HttpException(
-        `You don't have permission, you are client`,
-        HttpStatus.FORBIDDEN,
-      );
+    await this.authService.protectedRoutes(req.user);
 
     return req.user;
   }
