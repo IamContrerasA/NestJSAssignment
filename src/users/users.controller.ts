@@ -7,6 +7,9 @@ import {
   Patch,
   Post,
   UseGuards,
+  Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -32,19 +35,35 @@ export class UsersController {
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto, @Request() req) {
+    const user = await this.usersService.findOne(req.user.id);
+    if (!user.logged)
+      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+
     return this.usersService.create(createUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Request() req,
+  ) {
+    const user = await this.usersService.findOne(req.user.id);
+    if (!user.logged)
+      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+
     return this.usersService.update(id, updateUserDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @Request() req) {
+    const user = await this.usersService.findOne(req.user.id);
+    if (!user.logged)
+      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+
     return this.usersService.remove(id);
   }
 }

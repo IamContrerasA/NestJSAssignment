@@ -17,6 +17,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users/entities/user.entity';
+import { UserRole } from './users/enum/user-enum';
 
 @Controller()
 export class AppController {
@@ -54,8 +55,15 @@ export class AppController {
   @Get('profile')
   async getProfile(@Request() req) {
     const user = await this.userRepository.findOne(req.user.id);
+
     if (!user.logged)
       throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+    if (user.role === UserRole.CLIENT)
+      throw new HttpException(
+        `You don't have permission, you are client`,
+        HttpStatus.FORBIDDEN,
+      );
+
     return req.user;
   }
 
