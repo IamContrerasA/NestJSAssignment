@@ -14,7 +14,6 @@ export class OrdersService {
   ) {}
 
   findAll(user: User) {
-    console.log(user);
     return this.orderRepository.find({
       relations: ['user', 'products'],
     });
