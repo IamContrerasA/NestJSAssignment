@@ -34,7 +34,7 @@ export class AuthService {
     };
   }
 
-  async protectedRoutes(bearerUser: User) {
+  async protectedRoutesClient(bearerUser: User) {
     const user = await this.usersService.findOne(`${bearerUser.id}`);
 
     if (!user.logged)
@@ -44,5 +44,12 @@ export class AuthService {
         `You don't have permission, you are client`,
         HttpStatus.FORBIDDEN,
       );
+  }
+
+  async protectedRoutes(bearerUser: User) {
+    const user = await this.usersService.findOne(`${bearerUser.id}`);
+
+    if (!user.logged)
+      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
   }
 }

@@ -4,9 +4,10 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { Order } from 'src/orders/entities/order.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, Order])],
+  imports: [AuthModule, TypeOrmModule.forFeature([Product, Order])],
   controllers: [ProductsController],
   providers: [ProductsService],
 })

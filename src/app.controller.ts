@@ -5,8 +5,6 @@ import {
   Post,
   UseGuards,
   Body,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
@@ -17,7 +15,6 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users/entities/user.entity';
-import { UserRole } from './users/enum/user-enum';
 
 @Controller()
 export class AppController {
@@ -49,14 +46,6 @@ export class AppController {
     await this.userRepository.save({ ...user, logged: false });
 
     return { message: 'logged out' };
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  async getProfile(@Request() req) {
-    await this.authService.protectedRoutes(req.user);
-
-    return req.user;
   }
 
   @Get()
