@@ -16,11 +16,15 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Get()
   findAll() {
@@ -36,9 +40,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto, @Request() req) {
-    const user = await this.usersService.findOne(req.user.id);
-    if (!user.logged)
-      throw new HttpException('Please signin first', HttpStatus.FORBIDDEN);
+    await this.authService.protectedRoutes(req.user);
 
     return this.usersService.create(createUserDto);
   }
