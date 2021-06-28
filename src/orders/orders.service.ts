@@ -30,17 +30,10 @@ export class OrdersService {
     return order;
   }
 
-  async showOrder() {
-    const fakeUser = {
-      id: 3,
-      email: 'email@email.com',
-      password: 'password',
-      role: 'role',
-    };
-
+  async showOrder(user: User) {
     const currentOrder = await this.orderRepository.findOne(
       {
-        user: fakeUser,
+        user,
         approved: false,
       },
       { relations: ['user', 'products'] },
@@ -49,33 +42,19 @@ export class OrdersService {
     return currentOrder;
   }
 
-  async showOrders() {
-    const fakeUser = {
-      id: 3,
-      email: 'email@email.com',
-      password: 'password',
-      role: 'role',
-    };
-
+  async showOrders(user: User) {
     const allClientOrders = await this.orderRepository.find({
       relations: ['user', 'products'],
-      where: { user: fakeUser },
+      where: { user },
     });
 
     return allClientOrders;
   }
 
-  async buyOrder() {
-    const fakeUser = {
-      id: 3,
-      email: 'email@email.com',
-      password: 'password',
-      role: 'role',
-    };
-
+  async buyOrder(user: User) {
     const currentOrder = await this.orderRepository.findOne(
       {
-        user: fakeUser,
+        user,
         approved: false,
       },
       { relations: ['user', 'products'] },

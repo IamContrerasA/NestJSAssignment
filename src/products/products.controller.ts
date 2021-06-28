@@ -90,7 +90,7 @@ export class ProductsController {
   @Post(':id/add-car')
   async addCar(@Param('id') id: string, @Request() req) {
     await this.authService.protectedRoutes(req.user);
-    return this.productsService.addCar(id);
+    return this.productsService.addCar(id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)

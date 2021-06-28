@@ -30,21 +30,21 @@ export class OrdersController {
   @Get('/show-order')
   async showOrder(@Request() req) {
     await this.authService.protectedRoutes(req.user);
-    return this.ordersService.showOrder();
+    return this.ordersService.showOrder(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/show-orders')
   async showOrders(@Request() req) {
     await this.authService.protectedRoutes(req.user);
-    return this.ordersService.showOrders();
+    return this.ordersService.showOrders(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('/buy-order')
   async buyOrder(@Request() req) {
     await this.authService.protectedRoutes(req.user);
-    return this.ordersService.buyOrder();
+    return this.ordersService.buyOrder(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
