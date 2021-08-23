@@ -4,7 +4,7 @@
 - set .env variables
 - npm run start:dev
 
-use signup endpoint for register a user, it can be a client or manager( "role": "client" , "role": "manager")
+Use signup endpoint for register a user, it can be a client or manager( "role": "client" , "role": "manager")
 
 ## Descripcion
 
